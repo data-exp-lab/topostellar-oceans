@@ -1,3 +1,6 @@
+# NOTE: what makes a common smk?
+# i haven't touched any of this yet
+
 from snakemake.utils import validate
 import pandas as pd
 
