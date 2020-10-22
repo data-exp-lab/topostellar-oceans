@@ -1,17 +1,15 @@
 rule final_enzo:
     input:
-        music_ic = 'path/to/music/initial/conditions' # or do i have to move them all to where the enzo script lives?
-        enzo_dir = '/path/to/enzo/directory'
-        par_file = 'path/to/enzo/par/file'
-        enzo_ex = '/path/to/enzo/executable'
+        enzo_dir = config["enzo"]["working_directory"],
+        par_file = '{input.enzo_dir}/parameter_file.txt',
+        enzo_ex = config["enzo"]["executable"]
     
     output: 
-        output_dir = '/path/to/enzo/data/directory' # is this what makes sense?
+        output_dir = '{input.enzo_dir}/output/seeds/SEED{sample}'
     
     run: 
         shell('cd {input.enzo_dir}; mpirun -n 16 ./{input.enzo_ex} -d {input.par_file}>& log_file') 
+        shell('mv DD* RD* log_file Enzo_Build *.out Out* Evtime RunFinished {output.output_dir}')
 
-        # move everything to output_dir
-
-rule email: 
+#rule email: 
 #TODO make a rule to send me a notification when the long enzo run wraps up

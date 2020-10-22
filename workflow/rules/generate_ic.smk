@@ -1,18 +1,28 @@
 # create initial conditions with music
 rule music_ic:
     input: 
-        music_dir = 'path/to/music/dir'
-        music_par='path/to/music/initial/config'
-        music='path/to/music/executable'
+        seed = '../resources/SEED{sample}',
+        music_dir = config["music"]["working_directory"],
+        music_par = '{input.music_dir}/ics_template.conf',
+        music = config["music"]["executable"]
 
     output:
-        music_ic = 'path/to/music/results'
+        music_ic = '{input.music_dir}/SEED{sample}'
 
     run:
-        # feed in random seed values to par file 
+        with open({input.seed}, "r") as f:
+            seed_val = f.readline()
+            f.close()
+
+        seed_dict = {seed: seed_val, seed_id: 'SEED{sample}'}
+        
+        with open({input.music_par}, "w") as f:
+            f.write(contents.format(seed_dict))
+            f.close()
 
         # run music
         shell('cd {input.music_dir}; ./{input.music} {input.music_par}')
 
+        print('Generated first set of IC')
         # move initial conditions to enzo working
         # is this necessary? can enzo just be pointed to the music IC directory?

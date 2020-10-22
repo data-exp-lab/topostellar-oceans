@@ -2,17 +2,30 @@
 # After configuring, running snakemake -n in a clone of this repository should successfully execute a dry-run of the workflow.
 
 
+##### load config #####
+
+configfile: "../config/config.yaml"
+
+
+##### setup report #####
+
 report: "report/workflow.rst"
 
 # Allow users to fix the underlying OS via singularity.
 singularity: "docker://continuumio/miniconda3"
 
+##### target rules #####
+
+seed_ids = ["%.2d" % i for i in range(1,11)]
 
 rule all:
-    input:
-        # The first rule should define the default target files
-        # Subsequent target rules can be specified below. They should start with all_*.
+    input: 
+        expand('/dpool/cwagner4/working/enzo_sims/output/seeds/SEED{id}/log_file', id = seed_ids)
 
+##### load rules #####
 
-include: "rules/common.smk"
-include: "rules/other.smk"
+include: "rules/generate_ic.smk"
+include: "rules/find_halos.smk"
+include: "rules/refine_ic.smk"
+include: "rules/enzo_run.smk"
+include: "rules/analyze.smk"

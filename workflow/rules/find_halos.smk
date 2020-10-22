@@ -1,37 +1,32 @@
 import yt
 import yt.analysis_modules.halo_analysis.api as haa
+import yaml
 
 rule initial_enzo:
     input:
-        music_ic = 'path/to/music/initial/conditions' # or do i have to move them all to where the enzo script lives?
-        enzo_dir = '/path/to/enzo/directory'
-        par_file = 'path/to/enzo/par/file'
-        enzo_ex = '/path/to/enzo/executable'
+        enzo_dir = config["enzo"]["working_directory"], 
+        par_file = config["enzo"]["parameter_file"],
+        enzo_ex = config["enzo"]["executable"],
+        seed = '../resources/SEED{sample}'
     
-    output: 
-        output_dir = '/path/to/enzo/data/directory' # is this what makes sense?
-    
+    output:
+        output_dir = '{input.enzo_dir}/SEED{sample}/halo_finding' #does this make sense
+
     run: 
         shell('cd {input.enzo_dir}; mpirun -n 16 ./{input.enzo_ex} -d {input.par_file}>& log_file') 
-
-        # move everything to output_dir
+        shell('mv DD* RD* log_file Enzo_Build *.out Out* Evtime RunFinished {output.output_dir}')
 
 rule halo_finding:
-    input: 
-        data_directory = '/path/to/enzo/data/directory'
-        data = '/path/to/first/enzo/data'
-
+    input:
+        data_dir = '{input.enzo_dir}/SEED{sample}/halo_finding'
     output: 
-        # still confused on what the point of output files are -- should i be
-        # outputting an actual file with the coordinates? 
+        coords_output = '{input.output_dir}/coords.yaml'
 
     run: 
-        ds = yt.load(data)
+        ds = yt.load('{input.data_dir}/RD0001/RedshiftOutput0001')
         hc = haa.HaloCatalog(data_ds = ds, finder_method="fof", 
-                             output_dir="{input.data_directory}/RD0001/halo_catalogs/catalog")
+                             output_dir="{input.data_dir}/RD0001/halo_catalogs/catalog")
         hc.create()
         hc.load()
         coords = [_.in_units("unitary") for _ in hc.halos_ds.r[:].argmax(("io", "particle_mass"))]
-
-        # output coords somehow? as file? as env variable?
-
+        yaml.dump(coords, open({output.coords_output}, "w"))

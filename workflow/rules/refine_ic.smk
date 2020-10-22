@@ -1,9 +1,9 @@
 # NOTE: do i need to have this rule when it's basically identical to generate_ic.smk?
 # create initial conditions with music
-rule music_ic:
+rule music_refine:
     input: 
-        music_dir = 'path/to/music/dir'
-        music_par='path/to/music/centered/config'
+        music_dir = 'path/to/music/dir',
+        music_par='path/to/music/centered/config',
         music='path/to/music/executable'
 
     output:
