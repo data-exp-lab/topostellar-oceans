@@ -1,25 +1,13 @@
 # This file should contain everything to configure the workflow on a global scale.
 # In case of sample based data, it should be complemented by a samples.tsv file that contains
 # one row per sample. It can be parsed easily via pandas.
-samples: "config/samples.tsv"
-
-seeds: 
-  - 21188
-  - 55488
-  - 45027
-  - 44292
-  - 16270
-  - 48438
-  - 13127
-  - 15915
-  - 95322
-  - 96840
+#samples: "config/samples.tsv"
 
 enzo:
-  working_directory: '/dpool/cwagner4/working/enzo_sims'
+  working_directory: '{workdir}/enzo_sims'
   parameter_file: '{enzo.working_directory}/parameter_file.txt'
   executable: '{enzo.working_directory}/enzo.exe'
 
 music:
-  working_directory: '/dpool/cwagner4/music'
+  working_directory: '{workdir}/music'
   executable: '{music.working_directory}/MUSIC'

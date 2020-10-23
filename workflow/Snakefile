@@ -20,7 +20,8 @@ seed_ids = ["%.2d" % i for i in range(1,11)]
 
 rule all:
     input: 
-        expand('/dpool/cwagner4/working/enzo_sims/output/seeds/SEED{id}/log_file', id = seed_ids)
+        expand('{workdir}/music/SEED{id}/parameter_file.txt', id = seed_ids, workdir=config["workdir"])
+        #expand('/dpool/cwagner4/working/enzo_sims/output/seeds/SEED{id}/log_file', id = seed_ids)
 
 ##### load rules #####
 

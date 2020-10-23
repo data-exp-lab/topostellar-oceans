@@ -4,7 +4,8 @@ rule music_ic:
         seed = '../resources/SEED{sample}',
         music_dir = config["music"]["working_directory"],
         music_par = '{input.music_dir}/ics_template.conf',
-        music = config["music"]["executable"]
+        music = config["music"]["executable"],
+        enzo_dir = config["enzo"]["working_directory"]
 
     output:
         music_ic = '{input.music_dir}/SEED{sample}'
@@ -24,5 +25,6 @@ rule music_ic:
         shell('cd {input.music_dir}; ./{input.music} {input.music_par}')
 
         print('Generated first set of IC')
-        # move initial conditions to enzo working
-        # is this necessary? can enzo just be pointed to the music IC directory?
+
+        # move IC to enzo working directory
+        shell('mv {output.music_ic} {input.enzo_dir}')
