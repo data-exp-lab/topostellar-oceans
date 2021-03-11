@@ -1,0 +1,64 @@
+# Relevant Section of Enzo Paramter File (NOT COMPLETE!) 
+ProblemType                              = 30      // cosmology simulation
+TopGridRank                              = 3
+TopGridDimensions                        = 256 256 256
+SelfGravity                              = 1       // gravity on
+TopGridGravityBoundary                   = 0       // Periodic BC for gravity
+LeftFaceBoundaryCondition                = 3 3 3   // same for fluid
+RightFaceBoundaryCondition               = 3 3 3
+RefineBy                                 = 2
+
+#
+CosmologySimulationOmegaBaryonNow        = 0.0486
+CosmologySimulationOmegaCDMNow           = 0.2603
+CosmologySimulationDensityName           = GridDensity
+CosmologySimulationVelocity1Name         = GridVelocities_x
+CosmologySimulationVelocity2Name         = GridVelocities_y
+CosmologySimulationVelocity3Name         = GridVelocities_z
+CosmologySimulationCalculatePositions    = 1
+CosmologySimulationParticleVelocity1Name = ParticleVelocities_x
+CosmologySimulationParticleVelocity2Name = ParticleVelocities_y
+CosmologySimulationParticleVelocity3Name = ParticleVelocities_z
+CosmologySimulationParticleDisplacement1Name = ParticleDisplacements_x
+CosmologySimulationParticleDisplacement2Name = ParticleDisplacements_y
+CosmologySimulationParticleDisplacement3Name = ParticleDisplacements_z
+
+#
+#  define cosmology parameters
+#
+ComovingCoordinates                      = 1       // Expansion ON
+CosmologyOmegaMatterNow                  = 0.3089
+CosmologyOmegaLambdaNow                  = 0.6911
+CosmologyHubbleConstantNow               = 0.6774     // in 100 km/s/Mpc
+CosmologyComovingBoxSize                 = 0.2    // in Mpc/h
+CosmologyMaxExpansionRate                = 0.015   // maximum allowed delta(a)/a
+CosmologyInitialRedshift                 = 200      //
+CosmologyFinalRedshift                   = 15       //
+GravitationalConstant                    = 1       // this must be true for cosmology
+#
+#
+ParallelRootGridIO                       = 1
+ParallelParticleIO                       = 1
+PartitionNestedGrids                     = 1
+CosmologySimulationNumberOfInitialGrids  = 1
+
+dtDataDump             = 2.0        // dump at beginning and end
+DataDumpName           = output_
+CosmologyOutputRedshift[0] = 20.0
+CosmologyOutputRedshift[1] = 15.0
+ 
+#
+#  set hydro parameters
+#
+Gamma                  = 1.6667
+PPMDiffusionParameter  = 0       // diffusion off
+DualEnergyFormalism    = 1       // use total & internal energy
+InterpolationMethod    = 1     // SecondOrderA
+CourantSafetyNumber    = 0.4
+ParticleCourantSafetyNumber = 0.4
+ 
+#
+#  set some global parameters
+#
+GreensFunctionMaxNumber   = 100   // # of greens function at any one time
+UseMinimumPressureSupport = 1

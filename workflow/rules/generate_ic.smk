@@ -1,14 +1,15 @@
 # create initial conditions with music
 rule music_ic:
     input: 
-        seed = '../resources/SEED{sample}',
+        seed = 'resources/SEED{sample}',
         music_dir = config["music"]["working_directory"],
         music_par = '{input.music_dir}/ics_template.conf',
         music = config["music"]["executable"],
         enzo_dir = config["enzo"]["working_directory"]
 
     output:
-        music_ic = '{input.music_dir}/SEED{sample}'
+        music_ic = '{input.music_dir}/SEED{sample}',
+        output_par = '{input.music_dir}/SEED{sample}/parameter_file.txt'
 
     run:
         with open({input.seed}, "r") as f:

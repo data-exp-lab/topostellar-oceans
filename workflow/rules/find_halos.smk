@@ -7,7 +7,7 @@ rule initial_enzo:
         enzo_dir = config["enzo"]["working_directory"], 
         par_file = config["enzo"]["parameter_file"],
         enzo_ex = config["enzo"]["executable"],
-        seed = '../resources/SEED{sample}'
+        seed = 'resources/SEED{sample}'
     
     output:
         output_dir = '{input.enzo_dir}/SEED{sample}/halo_finding' #does this make sense
@@ -20,7 +20,7 @@ rule halo_finding:
     input:
         data_dir = '{input.enzo_dir}/SEED{sample}/halo_finding'
     output: 
-        coords_output = '{input.output_dir}/coords.yaml'
+        coords_output = '{input.output_dir}/coords.v'
 
     run: 
         ds = yt.load('{input.data_dir}/RD0001/RedshiftOutput0001')
